@@ -18,6 +18,7 @@ import UserMenu from "./menu/user-menu";
 import Sidebar from "./sidebar";
 import DesktopMenu from "./menu/desktop-menu";
 import { MenuItem } from "@/types/menu";
+import TeamSwitcher from "./menu/team-switcher";
 
 const ADMIN_PREFIX = "/admin";
 const menuItems: MenuItem[] = [
@@ -47,15 +48,9 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className='grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]'>
       <Sidebar>
-        <div className='flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6'>
-          <Link
-            href='/'
-            className='flex justify-center items-center gap-2 font-semibold'
-          >
-            <LaCryptaLogo className='w-6' />
-            <span className=''>La Crypta</span>
-          </Link>
-          <Button variant='outline' size='icon' className='ml-auto h-8 w-8'>
+        <div className='flex h-14 items-center gap-1 justify-around border-b lg:h-[60px] md:px-2 lg:px-4'>
+          <TeamSwitcher />
+          <Button variant='outline' size='icon' className='ml-auto h-10 w-10'>
             <Bell className='h-4 w-4' />
             <span className='sr-only'>Toggle notifications</span>
           </Button>
