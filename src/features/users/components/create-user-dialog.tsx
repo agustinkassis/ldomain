@@ -33,7 +33,7 @@ export function CreateUserDialog({
       onOpenChange && onOpenChange(false);
       e.preventDefault();
     },
-    [onNewUser]
+    [onNewUser, onOpenChange]
   );
 
   return (

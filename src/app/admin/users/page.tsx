@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { CreateUserDialog } from "@/features/users/components/create-user-dialog";
+import useUsersList from "@/features/users/hooks/use-users-list";
 
 export default function UsersPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  let users: User[] = usersMock;
+  const { users } = useUsersList({ page: 0 });
   // users = [];
 
   return (
