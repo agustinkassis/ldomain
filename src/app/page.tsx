@@ -19,9 +19,12 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Home() {
   const router = useRouter();
+
+  const { loginWithExtension } = useAuth();
 
   return (
     <div className='flex flex-col min-h-dvh'>
@@ -72,7 +75,10 @@ export default function Home() {
                     <DialogFooter>
                       <Button
                         type='submit'
-                        onClick={() => router.push("/admin")}
+                        onClick={() => {
+                          loginWithExtension();
+                          // router.push("/admin");
+                        }}
                       >
                         Connect with Alby
                       </Button>
