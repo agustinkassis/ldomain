@@ -44,8 +44,7 @@ export const useAuth = () => {
 
   const handleLogout = async () => {
     setUserPubkey(null);
-    alert("Session closed.");
-    // toast.success("Session closed.");
+    toast.success("Session closed.");
   };
 
   const handleGenerateSecretKey = () => {
