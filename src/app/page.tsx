@@ -20,11 +20,18 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
+import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
 
-  const { loginWithExtension } = useAuth();
+  const { loginWithExtension, userPubkey } = useAuth();
+
+  useEffect(() => {
+    if (userPubkey) {
+      router.push("/admin");
+    }
+  }, [router, userPubkey]);
 
   return (
     <div className='flex flex-col min-h-dvh'>
