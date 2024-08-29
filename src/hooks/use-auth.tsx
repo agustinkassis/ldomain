@@ -1,3 +1,4 @@
+"use client";
 // Packages
 
 import { useState, useEffect } from "react";
@@ -6,7 +7,7 @@ import { getPublicKey, generateSecretKey } from "nostr-tools";
 import { toast } from "sonner";
 import { NostrWindow } from "@/types/extension";
 
-const w: NostrWindow = window;
+const w: NostrWindow = window as any;
 
 export const useAuth = () => {
   const router = useRouter();
