@@ -7,7 +7,8 @@ import { getPublicKey, generateSecretKey } from "nostr-tools";
 import { toast } from "sonner";
 import { NostrWindow } from "@/types/extension";
 
-const w: NostrWindow = window as any;
+const w: NostrWindow | undefined =
+  typeof window !== "undefined" ? (window as any) : undefined;
 
 export const useAuth = () => {
   const router = useRouter();
@@ -44,13 +45,13 @@ export const useAuth = () => {
     if (isLoading) return;
     setIsLoading(true);
     try {
-      if (!w.nostr) {
+      if (!w?.nostr) {
         toast.warning("GetAlby is not installed or is not available");
         throw new Error("GetAlby is not installed or is not available");
       }
 
       // @ts-ignore
-      const pubkey = await window.nostr.getPublicKey();
+      const pubkey = await w.nostr.getPublicKey();
 
       setUserPubkey(pubkey);
       toast.success("Logged with extension");
@@ -78,7 +79,7 @@ export const useAuth = () => {
   };
 
   useEffect(() => {
-    w.nostr?.isEnabled().then((enabled: boolean) => {
+    w?.nostr?.isEnabled().then((enabled: boolean) => {
       if (enabled) {
         handleLoginWithExtension();
       }
