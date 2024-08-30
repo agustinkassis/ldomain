@@ -27,7 +27,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <Toaster />
+        <Toaster position='top-right' duration={1000} />
         {children}
       </body>
     </html>

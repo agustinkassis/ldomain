@@ -53,7 +53,7 @@ export const useAuth = () => {
       const pubkey = await window.nostr.getPublicKey();
 
       setUserPubkey(pubkey);
-      toast.warning("Logged with extension");
+      toast.success("Logged with extension");
       setIsLoading(false);
       return true;
     } catch (error) {
