@@ -1,6 +1,8 @@
+import { Step } from "../types/step";
+
 export interface StepIndicatorProps {
   currentStep: number;
-  steps: string[];
+  steps: Step[];
 }
 
 export default function StepIndicator({
@@ -17,7 +19,7 @@ export default function StepIndicator({
               index <= currentStep ? "text-primary" : "text-muted-foreground"
             }`}
           >
-            {step}
+            {step.title}
           </div>
         ))}
       </div>

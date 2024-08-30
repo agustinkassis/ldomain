@@ -16,8 +16,26 @@ import ChooseDomainStep from "@/features/setup/components/steps/choose-domain";
 import VerifyDomainStep from "@/features/setup/components/steps/verify-domain";
 import RewriteStep from "@/features/setup/components/steps/rewrite";
 import DoneStep from "@/features/setup/components/steps/done";
+import { Step } from "@/features/setup/types/step";
 
-const steps = ["Domain", "Owner", "Rewrite", "Done"];
+const steps: Step[] = [
+  {
+    title: "Domain",
+    component: ChooseDomainStep,
+  },
+  {
+    title: "Owner",
+    component: VerifyDomainStep,
+  },
+  {
+    title: "Rewrite",
+    component: RewriteStep,
+  },
+  {
+    title: "Done",
+    component: DoneStep,
+  },
+];
 
 export default function SetupPage() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -47,6 +65,8 @@ export default function SetupPage() {
     }
   };
 
+  const StepComponent = steps[currentStep].component;
+
   return (
     <div className='flex justify-center items-center min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 p-4'>
       {isLoading && <LoadingSpinner />}
@@ -60,40 +80,10 @@ export default function SetupPage() {
             Setup in 1 minute
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <StepIndicator currentStep={currentStep} steps={steps} />
-          <div className='mt-6 space-y-4'>
-            <div className='space-y-4'>
-              {currentStep === 0 && <ChooseDomainStep />}
-              {currentStep === 1 && <VerifyDomainStep />}
-              {currentStep === 2 && <RewriteStep />}
-              {currentStep === 3 && <DoneStep />}
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter className='flex justify-between'>
-          {currentStep < steps.length - 1 && currentStep > 0 ? (
-            <Button
-              variant='outline'
-              onClick={handlePrevious}
-              disabled={currentStep === 0 || isLoading}
-              className='text-sm sm:text-md px-2 sm:px-8'
-            >
-              Previous
-            </Button>
-          ) : (
-            <div></div>
-          )}
 
-          <Button
-            onClick={handleNext}
-            disabled={isLoading}
-            size={"lg"}
-            className='text-sm sm:text-md px-2 sm:px-8'
-          >
-            {currentStep === steps.length - 1 ? "Finish" : "Next"}
-          </Button>
-        </CardFooter>
+        <StepComponent handleNext={handleNext} handlePrevious={handlePrevious}>
+          <StepIndicator currentStep={currentStep} steps={steps} />
+        </StepComponent>
       </Card>
     </div>
   );
