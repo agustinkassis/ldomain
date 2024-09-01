@@ -1,17 +1,8 @@
 "use client";
-/* eslint-disable @next/next/no-img-element */
 import { useState, useEffect } from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import StepIndicator from "@/features/setup/components/step-indicator";
-import LoadingSpinner from "@/features/setup/components/loading-spinner";
 import ChooseDomainStep from "@/features/setup/components/steps/choose-domain";
 import VerifyDomainStep from "@/features/setup/components/steps/verify-domain";
 import RewriteStep from "@/features/setup/components/steps/rewrite";
@@ -20,19 +11,23 @@ import { Step } from "@/features/setup/types/step";
 
 const steps: Step[] = [
   {
-    title: "Domain",
+    title: "What's your domain?",
+    label: "Domain",
     component: ChooseDomainStep,
   },
   {
-    title: "Owner",
+    title: "Are you the owner?",
+    label: "Owner",
     component: VerifyDomainStep,
   },
   {
-    title: "Rewrite",
+    title: "Can you change the rules?",
+    label: "Setup",
     component: RewriteStep,
   },
   {
-    title: "Done",
+    title: "Congratulations",
+    label: "Done",
     component: DoneStep,
   },
 ];
@@ -40,7 +35,6 @@ const steps: Step[] = [
 export default function SetupPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -49,11 +43,7 @@ export default function SetupPage() {
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
-      setIsLoading(true);
-      setTimeout(() => {
-        setCurrentStep(currentStep + 1);
-        setIsLoading(false);
-      }, 1000); // Simulating a 1-second loading time
+      setCurrentStep(currentStep + 1);
     } else {
       router.push("/admin");
     }
@@ -69,7 +59,6 @@ export default function SetupPage() {
 
   return (
     <div className='flex justify-center items-center min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 p-4'>
-      {isLoading && <LoadingSpinner />}
       <Card
         className={`w-full max-w-full shadow-lg shadow-black/20 transition-opacity duration-1000 ease-in-out sm:max-w-[400px] ${
           isVisible ? "opacity-100" : "opacity-0"
@@ -77,7 +66,7 @@ export default function SetupPage() {
       >
         <CardHeader>
           <CardTitle className='text-xl sm:text-2xl'>
-            Setup in 1 minute
+            {steps[currentStep].title}
           </CardTitle>
         </CardHeader>
 

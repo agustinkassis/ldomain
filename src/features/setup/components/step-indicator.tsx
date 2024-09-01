@@ -19,7 +19,7 @@ export default function StepIndicator({
               index <= currentStep ? "text-primary" : "text-muted-foreground"
             }`}
           >
-            {step.title}
+            {step.label}
           </div>
         ))}
       </div>

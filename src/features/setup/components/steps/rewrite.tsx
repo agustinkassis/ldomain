@@ -27,11 +27,21 @@ export default function RewriteStep({
                 className='w-full h-auto rounded-lg'
               />
             </div>
-            <Label htmlFor='rewrite' className='text-sm font-medium'>
+            <Label htmlFor='domain' className='text-lg font-medium p-0'>
               Rewrite .well-known
             </Label>
             <p className='text-xs sm:text-sm text-muted-foreground'>
-              Rewrite your .well-known file. Detailed steps will be shown here.
+              Origin:
+              <span className='bg-slate-200 p-1 rounded-md'>
+                DOMAIN/.well-known/(path)
+              </span>{" "}
+            </p>
+            <p className='text-xs sm:text-sm text-muted-foreground'>
+              Rewrite to:
+              <span className='bg-slate-200 p-1 rounded-md'>
+                https://api.lightningdomain.io/rewrite/(path)
+              </span>{" "}
+              .
             </p>
           </div>
         </div>

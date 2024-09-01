@@ -6,5 +6,6 @@ export interface StepProps {
 
 export interface Step {
   title: string;
+  label: string;
   component: React.FC<StepProps>;
 }

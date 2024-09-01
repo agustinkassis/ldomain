@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { StepProps } from "../../types/step";
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 export default function VerifyDomainStep({
   children,
@@ -11,6 +12,15 @@ export default function VerifyDomainStep({
   handlePrevious,
 }: StepProps) {
   const [isLoading, setIsLoading] = useState(false);
+
+  const handleVerify = async () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      handleNext();
+      setIsLoading(false);
+    }, 600);
+  };
+
   return (
     <>
       <CardContent>
@@ -27,12 +37,22 @@ export default function VerifyDomainStep({
                 className='w-full h-auto rounded-lg'
               />
             </div>
-            <Label htmlFor='verify' className='text-sm font-medium'>
+            <Label htmlFor='domain' className='text-lg font-medium p-0'>
               Verify Domain
             </Label>
             <p className='text-xs sm:text-sm text-muted-foreground'>
-              Please verify your domain ownership. Instructions will be provided
-              here.
+              Create a file named{" "}
+              <span className='bg-slate-200 p-1 rounded-md'>verify.txt</span>{" "}
+              with the following content.
+            </p>
+            <p className='text-xs sm:text-sm text-muted-foreground bg-slate-200 p-1 rounded-md'>
+              24242342342343424242342343423
+            </p>
+            <p className='text-xs sm:text-sm text-muted-foreground'>
+              The file should be accesible at the following URL:
+            </p>
+            <p className='text-xs sm:text-sm bg-slate-200 p-1 rounded-md'>
+              https://yourdomain.com/.well-known/verify.txt
             </p>
           </div>
         </div>
@@ -48,12 +68,18 @@ export default function VerifyDomainStep({
         </Button>
 
         <Button
-          onClick={handleNext}
           disabled={isLoading}
+          onClick={handleVerify}
           size={"lg"}
-          className='text-sm sm:text-md px-2 sm:px-8'
+          className={`text-sm sm:text-md px-2 sm:px-4 flex flex-row gap-2`}
         >
-          Next
+          {isLoading && (
+            <div>
+              <Loader2 className='w-4 h-4 animate-spin text-white' />
+            </div>
+          )}
+
+          <div className='text-right'>Verify Ownership</div>
         </Button>
       </CardFooter>
     </>
