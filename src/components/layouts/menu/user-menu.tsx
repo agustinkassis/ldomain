@@ -35,10 +35,29 @@ export default function UserMenu() {
       <DropdownMenuContent align='end'>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuItem>Support</DropdownMenuItem>
+        <DropdownMenuItem
+          className='cursor-pointer'
+          onClick={() => router.push("/admin/settings/profile")}
+        >
+          My profile
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className='cursor-pointer'
+          onClick={() => router.push("/admin/settings/wallets")}
+        >
+          My wallets
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className='cursor-pointer'
+          onClick={() => router.push("https://discord.lacrypta.ar")}
+        >
+          Support
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => router.push("/")}>
+        <DropdownMenuItem
+          className='cursor-pointer'
+          onClick={() => router.push("/")}
+        >
           Logout
         </DropdownMenuItem>
       </DropdownMenuContent>
