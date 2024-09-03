@@ -1,0 +1,11 @@
+.language-javascript {
+  white-space: pre-wrap !important;
+}
+
+.prism-live textarea.prism-live,
+.prism-live pre.prism-live {
+  --scrollbar-width: 17px;
+  padding: 1em !important;
+  padding-bottom: var(--scrollbar-width) !important;
+  padding-right: var(--scrollbar-width) !important;
+}

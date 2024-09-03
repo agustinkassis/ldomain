@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { StepProps } from "../../types/step";
 import { Button } from "@/components/ui/button";
+import GuideModal from "../guide/guide-modal";
+import { InfoIcon, Loader2 } from "lucide-react";
 
 export default function RewriteStep({
   children,
@@ -11,8 +13,19 @@ export default function RewriteStep({
   handlePrevious,
 }: StepProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleVerify = async () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      handleNext();
+      setIsLoading(false);
+    }, 600);
+  };
+
   return (
     <>
+      <GuideModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
       <CardContent>
         {children}
         <div className='mt-6 space-y-4'>
@@ -43,6 +56,15 @@ export default function RewriteStep({
               </span>{" "}
               .
             </p>
+
+            <Button
+              variant='outline'
+              className='w-full'
+              onClick={() => setIsModalOpen(true)}
+            >
+              <InfoIcon className='mr-2' />
+              Setup Instructions
+            </Button>
           </div>
         </div>
       </CardContent>
@@ -57,12 +79,18 @@ export default function RewriteStep({
         </Button>
 
         <Button
-          onClick={handleNext}
           disabled={isLoading}
+          onClick={handleVerify}
           size={"lg"}
-          className='text-sm sm:text-md px-2 sm:px-8'
+          className={`text-sm sm:text-md px-2 sm:px-4 flex flex-row gap-2`}
         >
-          Next
+          {isLoading && (
+            <div>
+              <Loader2 className='w-4 h-4 animate-spin text-white' />
+            </div>
+          )}
+
+          <div className='text-right'>Verify Rules</div>
         </Button>
       </CardFooter>
     </>
