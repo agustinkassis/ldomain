@@ -6,4 +6,6 @@ export interface MenuItem {
   >;
   title: string;
   href: string;
+  isAdmin: boolean;
+  disabled?: boolean;
 }

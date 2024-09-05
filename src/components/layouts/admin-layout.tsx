@@ -1,6 +1,14 @@
 "use client";
-import Link from "next/link";
-import { Bell, Search, Home, Settings, Users, WebhookIcon } from "lucide-react";
+import { useState } from "react";
+import {
+  Bell,
+  Search,
+  Home,
+  Settings,
+  Users,
+  WebhookIcon,
+  Wallet,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,7 +20,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
-import LaCryptaLogo from "@/components/icons/lacrypta";
 import MobileMenu from "./menu/mobile-menu";
 import UserMenu from "./menu/user-menu";
 import Sidebar from "./sidebar";
@@ -26,57 +33,47 @@ const menuItems: MenuItem[] = [
     icon: Home,
     title: "Dashboard",
     href: `${ADMIN_PREFIX}`,
+    isAdmin: false,
   },
   {
-    icon: Users,
-    title: "Users",
-    href: `${ADMIN_PREFIX}/users`,
-  },
-  {
-    icon: WebhookIcon,
-    title: "Webhooks",
-    href: `${ADMIN_PREFIX}/webhooks`,
+    icon: Wallet,
+    title: "Wallets",
+    href: `${ADMIN_PREFIX}/wallets`,
+    disabled: true,
+    isAdmin: false,
   },
   {
     icon: Settings,
     title: "Settings",
     href: `${ADMIN_PREFIX}/settings`,
+    disabled: true,
+    isAdmin: false,
+  },
+  {
+    icon: Users,
+    title: "Users",
+    href: `${ADMIN_PREFIX}/users`,
+    isAdmin: true,
+  },
+  {
+    icon: WebhookIcon,
+    title: "Webhooks",
+    href: `${ADMIN_PREFIX}/webhooks`,
+    disabled: true,
+    isAdmin: true,
   },
 ];
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
+  const [isAdmin, setIsAdmin] = useState(true);
+
   return (
     <div className='grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]'>
-      <Sidebar>
-        <div className='flex h-14 items-center gap-1 justify-around border-b lg:h-[60px] md:px-2 lg:px-4'>
-          <TeamSwitcher />
-          <Button variant='outline' size='icon' className='ml-auto h-10 w-10'>
-            <Bell className='h-4 w-4' />
-            <span className='sr-only'>Toggle notifications</span>
-          </Button>
-        </div>
-        <DesktopMenu menuItems={menuItems} />
-        <div className='mt-auto p-4'>
-          <Card x-chunk='dashboard-02-chunk-0'>
-            <CardHeader className='p-2 pt-0 md:p-4'>
-              <CardTitle>Upgrade to Pro</CardTitle>
-              <CardDescription>
-                Unlock all features and get unlimited access to our support
-                team.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className='p-2 pt-0 md:p-4 md:pt-0'>
-              <Button size='sm' className='w-full'>
-                Upgrade
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </Sidebar>
+      <DesktopMenu menuItems={menuItems} isAdmin={isAdmin} />
 
       <div className='flex flex-col'>
         <header className='flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6'>
-          <MobileMenu menuItems={menuItems} />
+          <MobileMenu menuItems={menuItems} isAdmin={isAdmin} />
           <div className='w-full flex-1'>
             <form>
               <div className='relative'>

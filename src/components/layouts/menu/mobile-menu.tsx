@@ -1,28 +1,24 @@
 "use client";
-import LaCryptaLogo from "@/components/icons/lacrypta";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { MenuItem } from "@/types/menu";
-import {
-  Home,
-  LineChart,
-  Menu,
-  Package,
-  ShoppingCart,
-  Users,
-} from "lucide-react";
+import { Menu } from "lucide-react";
 import Link from "next/link";
 import TeamSwitcher from "./team-switcher";
+import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
+import UpgradeBlock from "./upgrade-block";
 
-export default function MobileMenu({ menuItems }: { menuItems: MenuItem[] }) {
+interface MobileMenuProps {
+  menuItems: MenuItem[];
+  isAdmin?: boolean;
+}
+
+export default function MobileMenu({
+  menuItems,
+  isAdmin = false,
+}: MobileMenuProps) {
+  const pathname = usePathname();
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -34,34 +30,67 @@ export default function MobileMenu({ menuItems }: { menuItems: MenuItem[] }) {
       <SheetContent side='left' className='flex flex-col'>
         <nav className='grid gap-2 text-lg pr-8 font-medium'>
           <TeamSwitcher className='w-full text-lg p-2' />
-          {menuItems.map((item, k) => (
-            <Link
-              key={k}
-              href={item.href}
-              className='mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground'
-            >
-              <item.icon className='h-5 w-5' />
-              {item.title}
-            </Link>
-          ))}
+          <>
+            <div className='pt-4 pb-2'>
+              <p className='px-2 text-xs font-semibold text-gray-400 uppercase'>
+                User
+              </p>
+            </div>
+            {menuItems
+              .filter((item) => !item.isAdmin)
+              .map((item, k) => (
+                <MovileMenuLink
+                  key={k}
+                  item={item}
+                  selected={pathname === item.href}
+                />
+              ))}
+          </>
+          {isAdmin && (
+            <>
+              <div className='pt-4 pb-2'>
+                <p className='px-2 text-xs font-semibold text-gray-400 uppercase'>
+                  Admin
+                </p>
+              </div>
+              {menuItems
+                .filter((item) => item.isAdmin)
+                .map((item, k) => (
+                  <MovileMenuLink
+                    key={k}
+                    item={item}
+                    selected={pathname === item.href}
+                  />
+                ))}
+            </>
+          )}
         </nav>
         <div className='mt-auto'>
-          <Card>
-            <CardHeader>
-              <CardTitle>Upgrade to Pro</CardTitle>
-              <CardDescription>
-                Unlock all features and get unlimited access to our support
-                team.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button size='sm' className='w-full'>
-                Upgrade
-              </Button>
-            </CardContent>
-          </Card>
+          <UpgradeBlock />
         </div>
       </SheetContent>
     </Sheet>
+  );
+}
+
+function MovileMenuLink({
+  item,
+  selected,
+}: {
+  item: MenuItem;
+  selected: boolean;
+}) {
+  return (
+    <Link
+      href={!item.disabled ? item.href : ""}
+      className={cn(
+        "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground",
+        item.disabled && "text-gray-300 hover:text-gray-300 cursor-not-allowed",
+        selected && "bg-muted"
+      )}
+    >
+      <item.icon className='h-5 w-5' />
+      {item.title}
+    </Link>
   );
 }
