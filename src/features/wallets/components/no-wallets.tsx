@@ -7,7 +7,6 @@ export default function NoWallets() {
       <p className='text-sm text-muted-foreground'>
         Click on <b>Add Wallet</b> to start.
       </p>
-      <Button className='mt-4'>Add User</Button>
     </div>
   );
 }
