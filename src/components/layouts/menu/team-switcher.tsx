@@ -86,8 +86,12 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
         label: "My Domains",
         domains: domainList.map((domain) => domain.isAdmin),
       },
+      {
+        label: "Other Domains",
+        domains: domainList.map((domain) => !domain.isAdmin),
+      },
     ];
-  }, []);
+  }, [domainList]);
 
   const [selectedTeam, setSelectedTeam] = React.useState<Team>(
     groups[0].domains[0]
