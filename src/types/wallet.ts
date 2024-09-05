@@ -2,6 +2,8 @@ export interface Wallet {
   display_name: string;
   provider: WalletProvider;
   config: Record<string, any>;
+  canSend: boolean;
+  canReceive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
