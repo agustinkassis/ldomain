@@ -12,7 +12,7 @@ import ToggleFilter from "@/features/wallets/components/toggle-button";
 export default function WalletsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { wallets } = useWalletsList({ page: 0 });
-  // wallets = [];
+  // const wallets: Wallet[] = [];
 
   const [canReceiveFilter, setCanReceiveFilter] = useState(false);
   const [canSendFilter, setCanSendFilter] = useState(false);
@@ -26,16 +26,20 @@ export default function WalletsPage() {
         </h1>
         <div className='flex flex-row justify-between w-full mt-4'>
           <div className='flex flex-col sm:flex-row gap-4 mb-4'>
-            <ToggleFilter
-              label='Can Receive'
-              checked={canReceiveFilter}
-              onChange={(checked) => setCanReceiveFilter(checked)}
-            />
-            <ToggleFilter
-              label='Can Send'
-              checked={canSendFilter}
-              onChange={(checked) => setCanSendFilter(checked)}
-            />
+            {wallets.length > 0 && (
+              <>
+                <ToggleFilter
+                  label='Can Receive'
+                  checked={canReceiveFilter}
+                  onChange={(checked) => setCanReceiveFilter(checked)}
+                />
+                <ToggleFilter
+                  label='Can Send'
+                  checked={canSendFilter}
+                  onChange={(checked) => setCanSendFilter(checked)}
+                />
+              </>
+            )}
           </div>
 
           <Button
@@ -55,7 +59,17 @@ export default function WalletsPage() {
         className='flex flex-1 rounded-lg border border-dashed shadow-sm'
         x-chunk='dashboard-02-chunk-1'
       >
-        <WalletsList wallets={wallets} />
+        <WalletsList
+          wallets={wallets}
+          filter={
+            !canReceiveFilter && !canSendFilter
+              ? undefined
+              : {
+                  canReceive: canReceiveFilter,
+                  canSend: canSendFilter,
+                }
+          }
+        />
       </div>
     </>
   );
