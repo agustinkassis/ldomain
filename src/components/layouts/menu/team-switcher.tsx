@@ -47,8 +47,7 @@ interface TeamSwitcherProps extends PopoverTriggerProps {}
 
 export default function TeamSwitcher({ className }: TeamSwitcherProps) {
   const [open, setOpen] = React.useState(false);
-  const { isLoading, domainList, currentDomain, setCurrentDomain } =
-    useDomains();
+  const { domainList, currentDomain, setCurrentDomain } = useDomains();
   const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
 
   const groups = React.useMemo(() => {
@@ -68,7 +67,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
     <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          {isLoading ? (
+          {!currentDomain ? (
             <Skeleton className='w-full h-[40px] p-2 text-xs flex items-center text-gray-500'>
               Loading Domains
             </Skeleton>
@@ -82,13 +81,13 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
             >
               <Avatar className='mr-2 h-5 w-5'>
                 <AvatarImage
-                  src={currentDomain!.logo}
-                  alt={currentDomain!.label}
+                  src={currentDomain.logo}
+                  alt={currentDomain.label}
                   className='rounded'
                 />
                 <AvatarFallback>LC</AvatarFallback>
               </Avatar>
-              {currentDomain!.label}
+              {currentDomain.label}
               <ChevronDown className='ml-auto h-4 w-4 shrink-0 opacity-50' />
             </Button>
           )}

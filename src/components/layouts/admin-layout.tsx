@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import {
-  Bell,
   Search,
   Home,
   Settings,
@@ -17,7 +16,6 @@ import UserMenu from "./menu/user-menu";
 import DesktopMenu from "./menu/desktop-menu";
 import { MenuItem } from "@/types/menu";
 import useDomains from "@/hooks/use-domains";
-import LoadingMenu from "./menu/loading-menu";
 import { Skeleton } from "../ui/skeleton";
 
 const ADMIN_PREFIX = "/admin";
@@ -67,14 +65,14 @@ const menuItems: MenuItem[] = [
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(true);
 
-  const { isLoading } = useDomains();
+  const { currentDomain } = useDomains();
 
   return (
     <div className='grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]'>
       <DesktopMenu
         menuItems={menuItems}
         isAdmin={isAdmin}
-        isLoading={isLoading}
+        isLoading={!currentDomain}
       />
 
       <div className='flex flex-col'>
@@ -82,12 +80,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           <MobileMenu
             menuItems={menuItems}
             isAdmin={isAdmin}
-            isLoading={isLoading}
+            isLoading={!currentDomain}
           />
           <div className='w-full flex-1'>
             <form>
               <div className='relative'>
-                {isLoading ? (
+                {!currentDomain ? (
                   <Skeleton className='w-1/2 h-10' />
                 ) : (
                   <>
@@ -102,7 +100,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               </div>
             </form>
           </div>
-          {isLoading ? (
+          {!currentDomain ? (
             <Skeleton className='w-10 h-10 rounded-full' />
           ) : (
             <UserMenu />
