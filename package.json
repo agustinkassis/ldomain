@@ -24,6 +24,7 @@
     "cmdk": "1.0.0",
     "lucide-react": "^0.428.0",
     "next": "14.2.5",
+    "nostr-hooks": "^2.9.6",
     "nostr-tools": "^2.7.2",
     "prismjs": "^1.29.0",
     "react": "^18",
