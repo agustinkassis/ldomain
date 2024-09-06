@@ -1,79 +1,150 @@
+import { useState } from "react";
+import { WalletCategory, WalletProvider } from "@/types/wallet";
+import providers from "@/features/providers/lib/list";
+import {
+  Search,
+  Wallet,
+  Building,
+  Network,
+  Repeat,
+  ArrowLeft,
+} from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { User } from "@/types/user";
-import { DialogProps } from "@radix-ui/react-dialog";
-import { FormEvent, FormEventHandler, useCallback } from "react";
-import walletMock from "@/mocks/users";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import WalletProviderButton from "./wallet-provider-button";
 
-export interface CreateWalletDialog extends DialogProps {
-  onNewWallet?: (user: User) => void;
+const providerCategories = {
+  wallet: {
+    label: "Wallets",
+    icon: <Wallet className='h-4 w-4' />,
+  },
+  exchange: {
+    label: "Exchanges",
+    icon: <Building className='h-4 w-4' />,
+  },
+  protocol: {
+    label: "Protocols",
+    icon: <Network className='h-4 w-4' />,
+  },
+  swap: {
+    label: "Swap",
+    icon: <Repeat className='h-4 w-4' />,
+  },
+};
+
+interface CreateWalletDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
-export function CreateWalletDialog({
-  onNewWallet,
+export default function CreateWalletDialog({
+  open,
   onOpenChange,
-  ...dialogProps
-}: CreateWalletDialog) {
-  const onSubmit = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
-      const _data = new FormData(e.currentTarget);
-      const data = Object.fromEntries(_data);
-      console.dir(data);
-      onNewWallet && onNewWallet(walletMock[0]);
-      onOpenChange && onOpenChange(false);
-      e.preventDefault();
-    },
-    [onNewWallet, onOpenChange]
-  );
+}: CreateWalletDialogProps) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("wallet");
+  const [selectedProvider, setSelectedProvider] = useState<WalletProvider>();
+
+  const renderProviderList = (category: WalletCategory) => {
+    const filteredProviders = providers.filter(
+      (provider) =>
+        provider.category === category &&
+        provider.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    return (
+      <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+        {filteredProviders.map((provider, k) => (
+          <WalletProviderButton
+            key={k}
+            provider={provider}
+            setSelectedProvider={setSelectedProvider}
+          />
+        ))}
+        {filteredProviders.length === 0 && (
+          <p className='text-center text-muted-foreground col-span-full'>
+            No providers found
+          </p>
+        )}
+      </div>
+    );
+  };
 
   return (
-    <Dialog onOpenChange={onOpenChange} {...dialogProps}>
-      <DialogContent className='sm:max-w-[425px]'>
-        <form onSubmit={onSubmit}>
-          <DialogHeader>
-            <DialogTitle>Add new Wallet</DialogTitle>
-            <DialogDescription>Add new Wallet.</DialogDescription>
-          </DialogHeader>
-          <div className='grid gap-4 py-4'>
-            <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='name' className='text-right'>
-                Pubkey
-              </Label>
-              <Input
-                id='pubkey'
-                name='pubkey'
-                defaultValue=''
-                placeholder='npub123 or hex'
-                className='col-span-3'
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className='sm:max-w-[600px]'>
+        {!selectedProvider ? (
+          <>
+            <DialogHeader>
+              <DialogTitle>Choose a Provider</DialogTitle>
+              <DialogDescription>
+                Connect with one of our available providers or protocols.
+              </DialogDescription>
+            </DialogHeader>
+            <Tabs
+              defaultValue='exchange'
+              className='w-full'
+              onValueChange={setSelectedCategory}
+              value={selectedCategory}
+            >
+              <TabsList className='grid w-full grid-cols-4'>
+                {Object.entries(providerCategories).map(([key, category]) => (
+                  <TabsTrigger key={key} value={key}>
+                    {category.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+              <div className='relative my-2'>
+                <Search className='absolute left-2 top-2.5 h-4 w-4 text-muted-foreground' />
+                <Input
+                  placeholder='Search providers'
+                  className='pl-8'
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              {Object.entries(providerCategories).map(([key, category]) => (
+                <TabsContent key={key} value={key} className='mt-2'>
+                  {renderProviderList(key as WalletCategory)}
+                </TabsContent>
+              ))}
+            </Tabs>
+          </>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle className='flex flex-row items-center gap-2'>
+                <Button
+                  variant='outline'
+                  onClick={() => setSelectedProvider(undefined)}
+                >
+                  <ArrowLeft className='h-4 w-4' />
+                </Button>
+                <div>{selectedProvider.name} Configuration</div>
+              </DialogTitle>
+              <DialogDescription>
+                Follow the steps below to connect your {selectedProvider.name}{" "}
+                account.
+              </DialogDescription>
+            </DialogHeader>
+            {selectedProvider?.setupComponent ? (
+              <selectedProvider.setupComponent
+                setSelectedProvider={setSelectedProvider}
               />
-            </div>
-            <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='username' className='text-right'>
-                Username
-              </Label>
-              <Input
-                id='walias'
-                name='walias'
-                defaultValue=''
-                placeholder='satoshi'
-                className='col-span-3'
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button type='submit'>Create User</Button>
-          </DialogFooter>
-        </form>
+            ) : (
+              <div>Not yet implemented</div>
+            )}
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );
