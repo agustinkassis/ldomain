@@ -1,3 +1,6 @@
+import { ComponentType } from "react";
+import { SetupComponentProps } from "@/features/providers/types/setup";
+
 export interface Wallet {
   display_name: string;
   provider: WalletProvider;
@@ -10,7 +13,15 @@ export interface Wallet {
 
 export interface WalletProvider {
   name: string;
-  image: string;
-  canSend: boolean;
-  canReceive: boolean;
+  category: WalletCategory;
+  image?: string;
+  canSend?: boolean;
+  canReceive?: boolean;
+  hasLUD16?: boolean;
+  hasNIP05?: boolean;
+  soon?: boolean;
+  disabled?: boolean;
+  setupComponent?: ComponentType<SetupComponentProps>;
 }
+
+export type WalletCategory = "exchange" | "wallet" | "protocol" | "swap";
