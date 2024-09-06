@@ -133,3 +133,7 @@ Choose coin and network
 ### SimpleSwap
 
 API Keys
+
+### CashuMint
+
+Store payments and encrypt it with user pubkeys
