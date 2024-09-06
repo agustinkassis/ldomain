@@ -15,8 +15,8 @@ Provide Lightning Address and Nostr functionality to your domain without coding.
 - [x] Nostr Login
 - [ ] Wizard installer
 - [ ] /.well-known proxy endpoint handler
-- [ ] NIP05 provider
-- [ ] LUD16 provider
+- [ ] [NIP05](https://github.com/nostr-protocol/nips/blob/master/05.md) provider
+- [ ] [LUD16](https://github.com/lnurl/luds/blob/luds/06.md) provider
 - [ ] Multiple domains
 - [ ] Multiple [wallet providers](./docs/WALLET_PROVIDERS.md)
 - [ ] Nostr profile editor
@@ -26,7 +26,7 @@ Provide Lightning Address and Nostr functionality to your domain without coding.
 - [ ] Dashboard feed
 - [ ] Follow users
 - [ ] Nostr inbox
-- [ ] Email to Nostr
+- [ ] [Email to Nostr](./docs/MAIL_NOSTR.md)
 
 ## Getting Started
 
