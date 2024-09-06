@@ -4,9 +4,8 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 import useWalletsList from "@/features/wallets/hooks/use-wallets-list";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import WalletsList from "@/features/wallets/components/wallets-list";
-import { CreateWalletDialog } from "@/features/wallets/components/create-wallet-dialog";
+import CreateWalletDialog from "@/features/wallets/components/create-wallet-dialog";
 import ToggleFilter from "@/features/wallets/components/toggle-button";
 
 export default function WalletsPage() {
