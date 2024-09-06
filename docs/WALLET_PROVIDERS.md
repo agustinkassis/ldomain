@@ -124,6 +124,10 @@ Mirror LUD16 response content
 
 Looks for LUDs on kind 0. (Might need some caching).
 
+### CashuMint
+
+Store payments and encrypt it with user pubkeys
+
 ## Swap Services
 
 ### FixedFloat
@@ -133,7 +137,3 @@ Choose coin and network
 ### SimpleSwap
 
 API Keys
-
-### CashuMint
-
-Store payments and encrypt it with user pubkeys
