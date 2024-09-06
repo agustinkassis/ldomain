@@ -1,14 +1,19 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
-import { ChangeEvent, FormEvent, FormEventHandler, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
+import { useProfile } from "nostr-hooks";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function EditProfile() {
+  const { userPubkey } = useAuth();
+  const { profile } = useProfile({ pubkey: userPubkey! });
+
   const [name, setName] = useState("Satoshi Nakamoto");
   const [about, setAbout] = useState("Creator of Bitcoin");
   const [website, setWebsite] = useState("https://bitcoin.org");
@@ -51,6 +56,14 @@ export default function EditProfile() {
       coverUrl,
     });
   };
+
+  useEffect(() => {
+    profile?.banner && setCoverUrl(profile.banner);
+    profile?.image && setAvatarUrl(profile.image);
+    profile?.about && setAbout(profile.about);
+    profile?.displayName && setName(profile.displayName);
+    profile?.website && setWebsite(profile.website);
+  }, [profile]);
 
   return (
     <Card className='w-full max-w-2xl mx-auto'>
