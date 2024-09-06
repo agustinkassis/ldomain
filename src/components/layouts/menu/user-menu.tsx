@@ -1,5 +1,10 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
+
+import { useProfile } from "nostr-hooks";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/use-auth";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,24 +13,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { CircleUser } from "lucide-react";
 
 export default function UserMenu() {
   const router = useRouter();
+  const { userPubkey } = useAuth();
+  const { profile } = useProfile({ pubkey: userPubkey! });
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant='secondary' size='icon' className='rounded-full'>
-          {/* <CircleUser className='h-5 w-5' /> */}
-          <img
-            alt='asds'
-            src={
-              "https://pbs.twimg.com/profile_images/1677079378490957825/nyLGSLks_400x400.png"
-            }
-            className='rounded-full'
-          />
+          {profile ? (
+            <img
+              alt={profile?.displayName}
+              src={profile?.image}
+              className='rounded-full'
+            />
+          ) : (
+            <CircleUser className='h-5 w-5' />
+          )}
+
           <span className='sr-only'>Toggle user menu</span>
         </Button>
       </DropdownMenuTrigger>
