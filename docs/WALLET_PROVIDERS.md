@@ -40,6 +40,25 @@ client.getSpotDepositAddress({
 });
 ```
 
+### Bitfinex
+
+Generate read-only api-key and api secreto to generate lightning invoices.
+
+```js
+const { RESTv2 } = require("bfx-api-node-rest");
+
+const bitfinex = new RESTv2({
+  apiKey: "API_KEY",
+  apiSecret: "API_SECRET",
+});
+
+const res = await bitfinex.generateInvoice({
+  wallet: "exchange",
+  currency: "LNX",
+  amount: "0.00001",
+});
+```
+
 ### Strike
 
 Mirror LUD16 `@strike.me`.
