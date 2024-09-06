@@ -1,5 +1,6 @@
 // create react context
-import { Domain, DomainItem } from "@/types/domain";
+import { useAuth } from "@/hooks/use-auth";
+import { DomainItem } from "@/types/domain";
 import { createContext, useCallback, useEffect, useState } from "react";
 
 export interface DomainContextType {
@@ -27,11 +28,13 @@ export function DomainProvider({ children }: DomainProviderProps) {
   const [currentDomain, setCurrentDomain] = useState<DomainItem>();
   const [domainList, setDomainList] = useState<DomainItem[]>([]);
 
-  const refreshDomainList = useCallback(() => {
+  const { userPubkey } = useAuth();
+
+  const refreshDomainList = useCallback(async () => {
     setIsLoading(true);
     return fetch(`/api/domains/list`, {
       method: "POST",
-      body: JSON.stringify(event),
+      body: JSON.stringify({ nostr: "event" }),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -39,18 +42,19 @@ export function DomainProvider({ children }: DomainProviderProps) {
         return res.data;
       })
       .finally(() => {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 2000);
+        setIsLoading(false);
       });
   }, []);
 
   useEffect(() => {
+    if (!userPubkey) {
+      return;
+    }
     refreshDomainList().then((domainList) => {
       setCurrentDomain(domainList[0]);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userPubkey]);
 
   return (
     <DomainContext.Provider
