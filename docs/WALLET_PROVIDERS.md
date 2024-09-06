@@ -22,7 +22,7 @@ client
 
 ### Bitget
 
-Generate read-only api-key to generate lightning invoices. We could listen for the payment somehow.
+Generate read-only api-key, api-secret and api-passphrase to generate lightning invoices. We could listen for the payment somehow.
 
 ```js
 const { RestClientV2 } = require("bitget-api");
