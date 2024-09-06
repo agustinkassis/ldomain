@@ -8,6 +8,7 @@ import {
   Users,
   WebhookIcon,
   Wallet,
+  Mail,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
@@ -31,6 +32,13 @@ const menuItems: MenuItem[] = [
     icon: Wallet,
     title: "Wallets",
     href: `${ADMIN_PREFIX}/wallets`,
+    disabled: true,
+    isAdmin: false,
+  },
+  {
+    icon: Mail,
+    title: "Inbox",
+    href: `${ADMIN_PREFIX}/inbox`,
     disabled: true,
     isAdmin: false,
   },
