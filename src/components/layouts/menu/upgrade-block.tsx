@@ -6,9 +6,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export default function UpgradeBlock() {
-  return (
+export default function UpgradeBlock({ isLoading }: { isLoading?: boolean }) {
+  return isLoading ? (
+    <Skeleton className='w-full h-32' />
+  ) : (
     <Card>
       <CardHeader>
         <CardTitle>Upgrade to Pro</CardTitle>

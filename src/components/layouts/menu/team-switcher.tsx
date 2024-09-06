@@ -39,36 +39,6 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import useDomains from "@/hooks/use-domains";
 
-const groups = [
-  {
-    label: "My Domains",
-    domains: [
-      {
-        label: "La Crypta",
-        value: "lacrypta.ar",
-        logo: "https://pbs.twimg.com/profile_images/1755606302951411712/5HjGkdHm_400x400.jpg",
-      },
-    ],
-  },
-  {
-    label: "Other Domains",
-    domains: [
-      {
-        label: "LABITCONF",
-        value: "labitconf.com",
-        logo: "https://pbs.twimg.com/profile_images/1659211049491640322/YC1BIJzG_400x400.jpg",
-      },
-      {
-        label: "Ripio",
-        value: "ripio.com",
-        logo: "https://pbs.twimg.com/profile_images/1668306347895472135/BzpLV7F7_400x400.jpg",
-      },
-    ],
-  },
-];
-
-type Team = (typeof groups)[number]["domains"][number];
-
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
 >;
@@ -77,25 +47,22 @@ interface TeamSwitcherProps extends PopoverTriggerProps {}
 
 export default function TeamSwitcher({ className }: TeamSwitcherProps) {
   const [open, setOpen] = React.useState(false);
-  const { isLoading, domainList } = useDomains();
+  const { isLoading, domainList, currentDomain, setCurrentDomain } =
+    useDomains();
   const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
 
   const groups = React.useMemo(() => {
     return [
       {
         label: "My Domains",
-        domains: domainList.map((domain) => domain.isAdmin),
+        domains: domainList.filter((domain) => domain.isAdmin),
       },
       {
         label: "Other Domains",
-        domains: domainList.map((domain) => !domain.isAdmin),
+        domains: domainList.filter((domain) => !domain.isAdmin),
       },
     ];
   }, [domainList]);
-
-  const [selectedTeam, setSelectedTeam] = React.useState<Team>(
-    groups[0].domains[0]
-  );
 
   return (
     <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
@@ -115,13 +82,13 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
             >
               <Avatar className='mr-2 h-5 w-5'>
                 <AvatarImage
-                  src={selectedTeam.logo}
-                  alt={selectedTeam.label}
+                  src={currentDomain!.logo}
+                  alt={currentDomain!.label}
                   className='rounded'
                 />
                 <AvatarFallback>LC</AvatarFallback>
               </Avatar>
-              {selectedTeam.label}
+              {currentDomain!.label}
               <ChevronDown className='ml-auto h-4 w-4 shrink-0 opacity-50' />
             </Button>
           )}
@@ -131,28 +98,28 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
             <CommandList>
               {groups.map((group) => (
                 <CommandGroup key={group.label} heading={group.label}>
-                  {group.domains.map((team) => (
+                  {group.domains.map((domain) => (
                     <CommandItem
-                      key={team.value}
+                      key={domain.value}
                       onSelect={() => {
-                        setSelectedTeam(team);
+                        setCurrentDomain(domain);
                         setOpen(false);
                       }}
                       className='text-sm'
                     >
                       <Avatar className='mr-2 h-5 w-5'>
                         <AvatarImage
-                          src={team.logo}
-                          alt={team.label}
+                          src={domain.logo}
+                          alt={domain.label}
                           className='grayscale'
                         />
                         <AvatarFallback>SC</AvatarFallback>
                       </Avatar>
-                      {team.label}
+                      {domain.label}
                       <CheckIcon
                         className={cn(
                           "ml-auto h-4 w-4",
-                          selectedTeam.value === team.value
+                          currentDomain?.value === domain.value
                             ? "opacity-100"
                             : "opacity-0"
                         )}

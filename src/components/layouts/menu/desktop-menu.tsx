@@ -9,18 +9,20 @@ import TeamSwitcher from "./team-switcher";
 import { Button } from "@/components/ui/button";
 import { Bell } from "lucide-react";
 import UpgradeBlock from "./upgrade-block";
+import LoadingMenu from "./loading-menu";
 
 interface DesktopMenuProps {
   menuItems: MenuItem[];
   isAdmin?: boolean;
+  isLoading?: boolean;
 }
 
 export default function DesktopMenu({
   menuItems,
   isAdmin = false,
+  isLoading,
 }: DesktopMenuProps) {
   const pathname = usePathname();
-
   return (
     <Sidebar>
       <div className='flex h-14 items-center gap-1 justify-around border-b lg:h-[60px] md:px-2 lg:px-4'>
@@ -32,44 +34,50 @@ export default function DesktopMenu({
       </div>
       <div className='flex-1'>
         <nav className='grid items-start px-2 text-sm font-medium lg:px-4'>
-          <>
-            <div className='pt-4 pb-2'>
-              <p className='px-2 text-xs font-semibold text-gray-400 uppercase'>
-                User
-              </p>
-            </div>
-            {menuItems
-              .filter((item) => !item.isAdmin)
-              .map((item, k) => (
-                <DesktopMenuLink
-                  key={k}
-                  item={item}
-                  selected={pathname !== item.href}
-                />
-              ))}
-          </>
-          {isAdmin && (
+          {isLoading ? (
+            <LoadingMenu />
+          ) : (
             <>
-              <div className='pt-4 pb-2'>
-                <p className='px-2 text-xs font-semibold text-gray-400 uppercase'>
-                  Admin
-                </p>
-              </div>
-              {menuItems
-                .filter((item) => item.isAdmin)
-                .map((item, k) => (
-                  <DesktopMenuLink
-                    key={k}
-                    item={item}
-                    selected={pathname !== item.href}
-                  />
-                ))}
+              <>
+                <div className='pt-4 pb-2'>
+                  <p className='px-2 text-xs font-semibold text-gray-400 uppercase'>
+                    User
+                  </p>
+                </div>
+                {menuItems
+                  .filter((item) => !item.isAdmin)
+                  .map((item, k) => (
+                    <DesktopMenuLink
+                      key={k}
+                      item={item}
+                      selected={pathname !== item.href}
+                    />
+                  ))}
+              </>
+              {isAdmin && (
+                <>
+                  <div className='pt-4 pb-2'>
+                    <p className='px-2 text-xs font-semibold text-gray-400 uppercase'>
+                      Admin
+                    </p>
+                  </div>
+                  {menuItems
+                    .filter((item) => item.isAdmin)
+                    .map((item, k) => (
+                      <DesktopMenuLink
+                        key={k}
+                        item={item}
+                        selected={pathname !== item.href}
+                      />
+                    ))}
+                </>
+              )}
             </>
           )}
         </nav>
       </div>
       <div className='mt-auto p-4'>
-        <UpgradeBlock />
+        <UpgradeBlock isLoading={isLoading} />
       </div>
     </Sidebar>
   );

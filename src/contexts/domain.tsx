@@ -36,14 +36,19 @@ export function DomainProvider({ children }: DomainProviderProps) {
       .then((res) => res.json())
       .then((res) => {
         setDomainList(res.data);
+        return res.data;
       })
       .finally(() => {
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
       });
   }, []);
 
   useEffect(() => {
-    refreshDomainList();
+    refreshDomainList().then((domainList) => {
+      setCurrentDomain(domainList[0]);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

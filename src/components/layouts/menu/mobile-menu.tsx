@@ -8,15 +8,19 @@ import TeamSwitcher from "./team-switcher";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import UpgradeBlock from "./upgrade-block";
+import { Skeleton } from "@/components/ui/skeleton";
+import LoadingMenu from "./loading-menu";
 
 interface MobileMenuProps {
   menuItems: MenuItem[];
   isAdmin?: boolean;
+  isLoading?: boolean;
 }
 
 export default function MobileMenu({
   menuItems,
   isAdmin = false,
+  isLoading,
 }: MobileMenuProps) {
   const pathname = usePathname();
   return (
@@ -30,31 +34,17 @@ export default function MobileMenu({
       <SheetContent side='left' className='flex flex-col'>
         <nav className='grid gap-2 text-lg pr-8 font-medium'>
           <TeamSwitcher className='w-full text-lg p-2' />
-          <>
-            <div className='pt-4 pb-2'>
-              <p className='px-2 text-xs font-semibold text-gray-400 uppercase'>
-                User
-              </p>
-            </div>
-            {menuItems
-              .filter((item) => !item.isAdmin)
-              .map((item, k) => (
-                <MovileMenuLink
-                  key={k}
-                  item={item}
-                  selected={pathname === item.href}
-                />
-              ))}
-          </>
-          {isAdmin && (
+          {isLoading ? (
+            <LoadingMenu />
+          ) : (
             <>
               <div className='pt-4 pb-2'>
                 <p className='px-2 text-xs font-semibold text-gray-400 uppercase'>
-                  Admin
+                  User
                 </p>
               </div>
               {menuItems
-                .filter((item) => item.isAdmin)
+                .filter((item) => !item.isAdmin)
                 .map((item, k) => (
                   <MovileMenuLink
                     key={k}
@@ -62,11 +52,30 @@ export default function MobileMenu({
                     selected={pathname === item.href}
                   />
                 ))}
+
+              {isAdmin && (
+                <>
+                  <div className='pt-4 pb-2'>
+                    <p className='px-2 text-xs font-semibold text-gray-400 uppercase'>
+                      Admin
+                    </p>
+                  </div>
+                  {menuItems
+                    .filter((item) => item.isAdmin)
+                    .map((item, k) => (
+                      <MovileMenuLink
+                        key={k}
+                        item={item}
+                        selected={pathname === item.href}
+                      />
+                    ))}
+                </>
+              )}
             </>
           )}
         </nav>
         <div className='mt-auto'>
-          <UpgradeBlock />
+          <UpgradeBlock isLoading={isLoading} />
         </div>
       </SheetContent>
     </Sheet>

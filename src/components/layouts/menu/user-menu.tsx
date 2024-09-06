@@ -10,9 +10,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Button } from "@/components/ui/button";
-import { CircleUser } from "lucide-react";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function UserMenu() {
