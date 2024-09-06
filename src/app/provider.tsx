@@ -1,5 +1,6 @@
 "use client";
 
+import { AuthProvider } from "@/contexts/auth";
 import { DomainProvider } from "@/contexts/domain";
 
 interface AppProviderProps {
@@ -7,5 +8,9 @@ interface AppProviderProps {
 }
 
 export const AppProvider = ({ children }: AppProviderProps) => {
-  return <DomainProvider>{children}</DomainProvider>;
+  return (
+    <AuthProvider>
+      <DomainProvider>{children}</DomainProvider>
+    </AuthProvider>
+  );
 };
