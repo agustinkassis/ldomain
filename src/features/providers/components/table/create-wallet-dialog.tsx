@@ -142,9 +142,11 @@ export default function CreateWalletDialog({
               </DialogDescription>
             </DialogHeader>
             {selectedProvider?.setupComponent ? (
-              <selectedProvider.setupComponent
-                setSelectedProvider={setSelectedProvider}
-              />
+              <ScrollArea className='flex-grow w-full h-[100px]'>
+                <selectedProvider.setupComponent
+                  setSelectedProvider={setSelectedProvider}
+                />
+              </ScrollArea>
             ) : (
               <div>Not yet implemented</div>
             )}

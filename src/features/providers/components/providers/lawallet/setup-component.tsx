@@ -46,6 +46,7 @@ export default function LaWalletSetupComponent({
       <Button
         variant='outline'
         className='w-full'
+        type='button'
         onClick={() => setShowAdvanced(!showAdvanced)}
       >
         {showAdvanced ? "Hide advanced settings" : "Show advanced settings"}
