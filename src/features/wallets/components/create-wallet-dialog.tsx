@@ -21,6 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import WalletProviderButton from "./wallet-provider-button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const providerCategories = {
   wallet: {
@@ -81,7 +82,7 @@ export default function CreateWalletDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='sm:max-w-[600px]'>
+      <DialogContent className='sm:max-w-[600px] h-[calc(100vh-20px)] flex flex-col mb-[10px]'>
         {!selectedProvider ? (
           <>
             <DialogHeader>
@@ -92,7 +93,7 @@ export default function CreateWalletDialog({
             </DialogHeader>
             <Tabs
               defaultValue='exchange'
-              className='w-full'
+              className='w-full flex-grow flex flex-col'
               onValueChange={setSelectedCategory}
               value={selectedCategory}
             >
@@ -103,20 +104,24 @@ export default function CreateWalletDialog({
                   </TabsTrigger>
                 ))}
               </TabsList>
-              <div className='relative my-2'>
-                <Search className='absolute left-2 top-2.5 h-4 w-4 text-muted-foreground' />
-                <Input
-                  placeholder='Search providers'
-                  className='pl-8'
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
+              <div className='flex-grow flex flex-col'>
+                <div className='relative my-2'>
+                  <Search className='absolute left-2 top-2.5 h-4 w-4 text-muted-foreground' />
+                  <Input
+                    placeholder='Search providers'
+                    className='pl-8'
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+                <ScrollArea className='flex-grow w-full h-[100px]'>
+                  {Object.entries(providerCategories).map(([key, category]) => (
+                    <TabsContent key={key} value={key} className='mt-2'>
+                      {renderProviderList(key as WalletCategory)}
+                    </TabsContent>
+                  ))}
+                </ScrollArea>
               </div>
-              {Object.entries(providerCategories).map(([key, category]) => (
-                <TabsContent key={key} value={key} className='mt-2'>
-                  {renderProviderList(key as WalletCategory)}
-                </TabsContent>
-              ))}
             </Tabs>
           </>
         ) : (
