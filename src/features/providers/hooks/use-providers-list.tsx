@@ -2,18 +2,18 @@
 import { Wallet } from "@/types/wallet";
 import { useEffect, useState } from "react";
 
-export interface UseUsersListProps {
+export interface UseProvidersListProps {
   page: number;
 }
 
-export interface UseWalletsListReturn {
+export interface UseProvidersListReturn {
   wallets: Wallet[];
   isLoading: boolean;
 }
 
-export default function useWalletsList({
+export default function useProvidersList({
   page = 0,
-}: UseUsersListProps): UseWalletsListReturn {
+}: UseProvidersListProps): UseProvidersListReturn {
   const [wallets, setWallets] = useState<Wallet[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 

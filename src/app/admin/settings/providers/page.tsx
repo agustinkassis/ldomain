@@ -3,14 +3,14 @@
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
-import useWalletsList from "@/features/wallets/hooks/use-wallets-list";
-import WalletsList from "@/features/wallets/components/wallets-list";
-import CreateWalletDialog from "@/features/wallets/components/create-wallet-dialog";
-import ToggleFilter from "@/features/wallets/components/toggle-button";
+import useProvidersList from "@/features/providers/hooks/use-providers-list";
+import WalletsList from "@/features/providers/components/table/wallets-list";
+import CreateWalletDialog from "@/features/providers/components/table/create-wallet-dialog";
+import ToggleFilter from "@/features/providers/components/table/toggle-button";
 
 export default function WalletsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { wallets } = useWalletsList({ page: 0 });
+  const { wallets } = useProvidersList({ page: 0 });
   // const wallets: Wallet[] = [];
 
   const [canReceiveFilter, setCanReceiveFilter] = useState(false);
@@ -21,7 +21,7 @@ export default function WalletsPage() {
       <CreateWalletDialog open={isModalOpen} onOpenChange={setIsModalOpen} />
       <div className='flex flex-col'>
         <h1 className='text-lg font-semibold md:text-2xl text-left'>
-          My Wallets
+          My Wallet Providers
         </h1>
         <div className='flex flex-row justify-between w-full mt-4'>
           <div className='flex flex-col sm:flex-row gap-4 mb-4'>

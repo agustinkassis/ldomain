@@ -50,9 +50,9 @@ export default function UserMenu() {
         </DropdownMenuItem>
         <DropdownMenuItem
           className='cursor-pointer'
-          onClick={() => router.push("/admin/settings/wallets")}
+          onClick={() => router.push("/admin/settings/providers")}
         >
-          My wallets
+          Wallet providers
         </DropdownMenuItem>
         <DropdownMenuItem
           className='cursor-pointer'

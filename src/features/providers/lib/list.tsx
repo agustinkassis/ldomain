@@ -36,7 +36,7 @@ const providers: WalletProvider[] = [
     hasNIP05: true,
     category: "wallet",
     setupComponent: dynamic(
-      () => import("../components/lawallet/setup-component"),
+      () => import("../components/providers/lawallet/setup-component"),
       {
         ssr: false,
         loading: () => <ComponentLoading />,
