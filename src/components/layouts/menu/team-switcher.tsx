@@ -37,7 +37,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import useDomains from "@/hooks/use-domains";
+import useDomains from "@/features/domains/hooks/use-domains";
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -82,12 +82,12 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
               <Avatar className='mr-2 h-5 w-5'>
                 <AvatarImage
                   src={currentDomain.logo}
-                  alt={currentDomain.label}
+                  alt={currentDomain.title}
                   className='rounded'
                 />
                 <AvatarFallback>LC</AvatarFallback>
               </Avatar>
-              {currentDomain.label}
+              {currentDomain.title}
               <ChevronDown className='ml-auto h-4 w-4 shrink-0 opacity-50' />
             </Button>
           )}
@@ -99,7 +99,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                 <CommandGroup key={group.label} heading={group.label}>
                   {group.domains.map((domain) => (
                     <CommandItem
-                      key={domain.value}
+                      key={domain.name}
                       onSelect={() => {
                         setCurrentDomain(domain);
                         setOpen(false);
@@ -109,16 +109,16 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                       <Avatar className='mr-2 h-5 w-5'>
                         <AvatarImage
                           src={domain.logo}
-                          alt={domain.label}
+                          alt={domain.title}
                           className='grayscale'
                         />
                         <AvatarFallback>SC</AvatarFallback>
                       </Avatar>
-                      {domain.label}
+                      {domain.title}
                       <CheckIcon
                         className={cn(
                           "ml-auto h-4 w-4",
-                          currentDomain?.value === domain.value
+                          currentDomain?.name === domain.name
                             ? "opacity-100"
                             : "opacity-0"
                         )}

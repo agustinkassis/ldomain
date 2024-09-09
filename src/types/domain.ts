@@ -1,7 +1,9 @@
 export interface Domain {
-  label: string;
-  value: string;
+  title: string;
+  name: string;
   logo: string;
+  apiEndpoint?: string;
+  adminPubkey?: string;
 }
 
 export interface DomainItem extends Domain {

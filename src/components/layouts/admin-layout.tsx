@@ -15,7 +15,7 @@ import MobileMenu from "./menu/mobile-menu";
 import UserMenu from "./menu/user-menu";
 import DesktopMenu from "./menu/desktop-menu";
 import { MenuItem } from "@/types/menu";
-import useDomains from "@/hooks/use-domains";
+import useDomains from "@/features/domains/hooks/use-domains";
 import { Skeleton } from "../ui/skeleton";
 
 const ADMIN_PREFIX = "/admin";
