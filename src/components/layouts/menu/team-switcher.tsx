@@ -14,30 +14,13 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import useDomains from "@/features/domains/hooks/use-domains";
+import AddDomainDialog from "@/features/domains/components/add-domain-dialog";
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -64,7 +47,11 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
   }, [domainList]);
 
   return (
-    <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
+    <>
+      <AddDomainDialog
+        open={showNewTeamDialog}
+        onOpenChange={setShowNewTeamDialog}
+      />
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           {!currentDomain ? (
@@ -131,64 +118,20 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
             <CommandSeparator />
             <CommandList>
               <CommandGroup>
-                <DialogTrigger asChild>
-                  <CommandItem
-                    onSelect={() => {
-                      setOpen(false);
-                      setShowNewTeamDialog(true);
-                    }}
-                  >
-                    <PlusCircle className='mr-2 h-5 w-5' />
-                    Create Domain
-                  </CommandItem>
-                </DialogTrigger>
+                <CommandItem
+                  onSelect={() => {
+                    setOpen(false);
+                    setShowNewTeamDialog(true);
+                  }}
+                >
+                  <PlusCircle className='mr-2 h-5 w-5' />
+                  Create Domain
+                </CommandItem>
               </CommandGroup>
             </CommandList>
           </Command>
         </PopoverContent>
       </Popover>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create Domain</DialogTitle>
-          <DialogDescription>Create a new domain</DialogDescription>
-        </DialogHeader>
-        <div>
-          <div className='space-y-4 py-2 pb-4'>
-            <div className='space-y-2'>
-              <Label htmlFor='name'>Domain</Label>
-              <Input id='name' placeholder='lacrypta.ar' />
-            </div>
-            <div className='space-y-2'>
-              <Label htmlFor='plan'>Subscription plan</Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder='Select a plan' />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value='free'>
-                    <span className='font-medium'>Free</span> -{" "}
-                    <span className='text-muted-foreground'>
-                      Trial for two weeks
-                    </span>
-                  </SelectItem>
-                  <SelectItem value='pro'>
-                    <span className='font-medium'>Pro</span> -{" "}
-                    <span className='text-muted-foreground'>
-                      $9/month per user
-                    </span>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </div>
-        <DialogFooter>
-          <Button variant='outline' onClick={() => setShowNewTeamDialog(false)}>
-            Cancel
-          </Button>
-          <Button type='submit'>Continue</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    </>
   );
 }
