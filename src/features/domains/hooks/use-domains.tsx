@@ -1,4 +1,7 @@
-import { DomainContext, DomainContextType } from "@/contexts/domain";
+import {
+  DomainContext,
+  DomainContextType,
+} from "@/features/domains/contexts/domain";
 import { useContext } from "react";
 
 export interface UseDomainsReturn extends DomainContextType {}
