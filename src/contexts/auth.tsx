@@ -1,8 +1,9 @@
 import { generateSecretKey, getPublicKey } from "nostr-tools";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { NostrWindow } from "@/types/extension";
+import { Signer } from "@/types/signer";
 
 export interface AuthContextType {
   isLoading: boolean;
@@ -10,6 +11,7 @@ export interface AuthContextType {
   loginWithSecretKey: (value: string) => Promise<boolean | undefined>;
   loginWithExtension: () => Promise<boolean | undefined>;
   logout: () => void;
+  getSigner: () => Signer;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -18,6 +20,9 @@ export const AuthContext = createContext<AuthContextType>({
   loginWithSecretKey: async () => false,
   loginWithExtension: async () => false,
   logout: () => {},
+  getSigner: () => {
+    throw new Error("getSigner not yet ready");
+  },
 });
 
 interface AuthProviderProps {
@@ -92,6 +97,13 @@ export function AuthProvider({
     toast.success("Session closed.");
   };
 
+  const getSigner = useCallback((): Signer => {
+    return {
+      getPublicKey: () => userPubkey as string,
+      sign: window.nostr?.signEvent,
+    } as Signer;
+  }, [userPubkey]);
+
   useEffect(() => {
     if (!autoconnect) {
       return;
@@ -112,6 +124,7 @@ export function AuthProvider({
         loginWithSecretKey: handleLoginWithSecretKey,
         loginWithExtension: handleLoginWithExtension,
         logout: handleLogout,
+        getSigner,
       }}
     >
       {children}
