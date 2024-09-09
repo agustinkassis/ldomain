@@ -1,7 +1,7 @@
 "use client";
 
 import { AuthProvider } from "@/contexts/auth";
-import { DomainProvider } from "@/contexts/domain";
+import { DomainProvider } from "@/features/domains/contexts/domain";
 import { useNostrHooks } from "nostr-hooks";
 
 interface AppProviderProps {
