@@ -1,12 +1,17 @@
 // create react context
 import { useAuth } from "@/hooks/use-auth";
-import { DomainItem } from "@/types/domain";
+import { Domain, DomainItem } from "@/types/domain";
 import { createContext, useCallback, useEffect, useState } from "react";
 
 export interface DomainContextType {
   isLoading: boolean;
   domainList: DomainItem[];
   currentDomain: DomainItem | undefined;
+  addDomainViaHandle: (
+    handle: string,
+    domain: Domain,
+    isAdmin: boolean
+  ) => void;
   setCurrentDomain: (domain: DomainItem) => void;
   refreshDomainList: () => void;
 }
@@ -17,6 +22,9 @@ export const DomainContext = createContext<DomainContextType>({
   currentDomain: undefined,
   setCurrentDomain: () => {},
   refreshDomainList: () => {},
+  addDomainViaHandle: (_handle: string, _domain: Domain, _isAdmin: boolean) => {
+    throw new Error("Function not ready.");
+  },
 });
 
 interface DomainProviderProps {
@@ -46,6 +54,31 @@ export function DomainProvider({ children }: DomainProviderProps) {
       });
   }, []);
 
+  const addDomainViaHandle = useCallback(
+    (handle: string, domain: Domain, isAdmin: boolean) => {
+      const currentDomainIndex = domainList.findIndex(
+        (d) => d.name === domain.name
+      );
+
+      if (currentDomainIndex === -1) {
+        console.info("Domain not found, adding new domain");
+        domainList.push({ ...domain, isAdmin, handles: [handle] });
+      } else {
+        const handleExist = domainList[currentDomainIndex].handles.findIndex(
+          (h) => h === handle
+        );
+        if (handleExist) {
+          console.info("Handle already exist");
+          return;
+        }
+        console.info("Pushing handle...");
+        domainList[currentDomainIndex].handles.push(handle);
+      }
+      setDomainList([...domainList]);
+    },
+    [domainList]
+  );
+
   useEffect(() => {
     if (!userPubkey) {
       return;
@@ -62,6 +95,7 @@ export function DomainProvider({ children }: DomainProviderProps) {
         isLoading,
         domainList,
         currentDomain,
+        addDomainViaHandle,
         setCurrentDomain,
         refreshDomainList,
       }}

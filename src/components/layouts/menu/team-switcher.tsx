@@ -82,38 +82,43 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
         <PopoverContent className='w-[200px] p-0'>
           <Command>
             <CommandList>
-              {groups.map((group) => (
-                <CommandGroup key={group.label} heading={group.label}>
-                  {group.domains.map((domain) => (
-                    <CommandItem
-                      key={domain.name}
-                      onSelect={() => {
-                        setCurrentDomain(domain);
-                        setOpen(false);
-                      }}
-                      className='text-sm'
-                    >
-                      <Avatar className='mr-2 h-5 w-5'>
-                        <AvatarImage
-                          src={domain.logo}
-                          alt={domain.title}
-                          className='grayscale'
+              {groups.map((group) => {
+                if (group.domains.length === 0) {
+                  return null;
+                }
+                return (
+                  <CommandGroup key={group.label} heading={group.label}>
+                    {group.domains.map((domain) => (
+                      <CommandItem
+                        key={domain.name}
+                        onSelect={() => {
+                          setCurrentDomain(domain);
+                          setOpen(false);
+                        }}
+                        className='text-sm'
+                      >
+                        <Avatar className='mr-2 h-5 w-5'>
+                          <AvatarImage
+                            src={domain.logo}
+                            alt={domain.title}
+                            className='grayscale'
+                          />
+                          <AvatarFallback>SC</AvatarFallback>
+                        </Avatar>
+                        {domain.title}
+                        <CheckIcon
+                          className={cn(
+                            "ml-auto h-4 w-4",
+                            currentDomain?.name === domain.name
+                              ? "opacity-100"
+                              : "opacity-0"
+                          )}
                         />
-                        <AvatarFallback>SC</AvatarFallback>
-                      </Avatar>
-                      {domain.title}
-                      <CheckIcon
-                        className={cn(
-                          "ml-auto h-4 w-4",
-                          currentDomain?.name === domain.name
-                            ? "opacity-100"
-                            : "opacity-0"
-                        )}
-                      />
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              ))}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                );
+              })}
             </CommandList>
             <CommandSeparator />
             <CommandList>
@@ -125,7 +130,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                   }}
                 >
                   <PlusCircle className='mr-2 h-5 w-5' />
-                  Create Domain
+                  Add Domain
                 </CommandItem>
               </CommandGroup>
             </CommandList>
