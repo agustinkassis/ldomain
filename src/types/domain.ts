@@ -4,6 +4,7 @@ export interface Domain {
   logo: string;
   apiEndpoint?: string;
   adminPubkey?: string;
+  hasProfileJson?: boolean;
 }
 
 export interface DomainItem extends Domain {
