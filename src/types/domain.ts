@@ -9,4 +9,5 @@ export interface Domain {
 
 export interface DomainItem extends Domain {
   isAdmin: boolean;
+  handles: string[];
 }
