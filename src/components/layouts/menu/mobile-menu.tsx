@@ -8,7 +8,6 @@ import DomainSwitcher from "../../../features/domains/components/domain-switcher
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import UpgradeBlock from "./upgrade-block";
-import { Skeleton } from "@/components/ui/skeleton";
 import LoadingMenu from "./loading-menu";
 
 interface MobileMenuProps {
@@ -39,7 +38,7 @@ export default function MobileMenu({
           ) : (
             <>
               <div className='pt-4 pb-2'>
-                <p className='px-2 text-xs font-semibold text-gray-400 uppercase'>
+                <p className='px-2 text-xs font-semibold text-slate-400 uppercase'>
                   User
                 </p>
               </div>
@@ -56,7 +55,7 @@ export default function MobileMenu({
               {isAdmin && (
                 <>
                   <div className='pt-4 pb-2'>
-                    <p className='px-2 text-xs font-semibold text-gray-400 uppercase'>
+                    <p className='px-2 text-xs font-semibold text-slate-400 uppercase'>
                       Admin
                     </p>
                   </div>
@@ -94,8 +93,9 @@ function MovileMenuLink({
       href={!item.disabled ? item.href : ""}
       className={cn(
         "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground",
-        item.disabled && "text-gray-300 hover:text-gray-300 cursor-not-allowed",
-        selected && "bg-muted"
+        item.disabled &&
+          "text-slate-300 hover:text-slate-300 dark:text-slate-500 dark:hover:text-slate-500 cursor-not-allowed",
+        selected && "bg-muted dark:text-slate-100"
       )}
     >
       <item.icon className='h-5 w-5' />

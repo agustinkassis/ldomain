@@ -14,12 +14,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { CircleUser } from "lucide-react";
+import { CircleUser, Laptop, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 export default function UserMenu() {
   const router = useRouter();
   const { userPubkey } = useAuth();
   const { profile } = useProfile({ pubkey: userPubkey! });
+  const { theme, setTheme } = useTheme();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -37,7 +39,7 @@ export default function UserMenu() {
           <span className='sr-only'>Toggle user menu</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='end'>
+      <DropdownMenuContent align='end' className='min-w-[180px]'>
         <DropdownMenuLabel>
           {profile?.displayName ? profile.displayName : "My Account"}
         </DropdownMenuLabel>
@@ -59,6 +61,38 @@ export default function UserMenu() {
           onClick={() => router.push("https://discord.lacrypta.ar")}
         >
           Support
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={(e) => e.preventDefault()}
+          className='focus:bg-transparent flex justify-between'
+        >
+          <span>Theme</span>
+          <div className='flex items-center'>
+            <button
+              onClick={() => setTheme("system")}
+              className={`p-1 w-6 h-6 rounded-md ${
+                theme === "system" ? "bg-muted" : ""
+              }`}
+            >
+              <Laptop className='h-4 w-4' />
+            </button>
+            <button
+              onClick={() => setTheme("light")}
+              className={`p-1 w-6 h-6 rounded-md ${
+                theme === "light" ? "bg-muted" : ""
+              }`}
+            >
+              <Sun className='h-4 w-4' />
+            </button>
+            <button
+              onClick={() => setTheme("dark")}
+              className={`p-1 w-6 h-6 rounded-md ${
+                theme === "dark" ? "bg-muted" : ""
+              }`}
+            >
+              <Moon className='h-4 w-4' />
+            </button>
+          </div>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
