@@ -115,7 +115,7 @@ export default function DomainResolverDetails({
             ) : isPubkeyMatch ? (
               <>
                 <CircleCheck className='h-4 w-4' />
-                <span>NIP-05 ownership suceessfully validated</span>
+                <span>NIP-05 ownership successfully validated</span>
               </>
             ) : (
               <>
