@@ -26,12 +26,12 @@ type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
 >;
 
-interface TeamSwitcherProps extends PopoverTriggerProps {}
+interface DomainSwitcherProps extends PopoverTriggerProps {}
 
-export default function TeamSwitcher({ className }: TeamSwitcherProps) {
+export default function DomainSwitcher({ className }: DomainSwitcherProps) {
   const [open, setOpen] = React.useState(false);
   const { domainList, currentDomain, setCurrentDomain } = useDomains();
-  const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
+  const [showNewDomainDialog, setShowNewDomainDialog] = React.useState(false);
 
   const groups = React.useMemo(() => {
     return [
@@ -49,8 +49,8 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
   return (
     <>
       <AddDomainDialog
-        open={showNewTeamDialog}
-        onOpenChange={setShowNewTeamDialog}
+        open={showNewDomainDialog}
+        onOpenChange={setShowNewDomainDialog}
       />
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
@@ -63,7 +63,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
               variant='outline'
               role='combobox'
               aria-expanded={open}
-              aria-label='Select a team'
+              aria-label='Select a domain'
               className={cn("w-[200px] justify-between", className)}
             >
               <Avatar className='mr-2 h-5 w-5'>
@@ -126,7 +126,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                 <CommandItem
                   onSelect={() => {
                     setOpen(false);
-                    setShowNewTeamDialog(true);
+                    setShowNewDomainDialog(true);
                   }}
                 >
                   <PlusCircle className='mr-2 h-5 w-5' />

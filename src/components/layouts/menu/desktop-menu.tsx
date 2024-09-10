@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { MenuItem } from "@/types/menu";
 import Sidebar from "../sidebar";
-import TeamSwitcher from "./team-switcher";
+import DomainSwitcher from "../../../features/domains/components/domain-switcher";
 import { Button } from "@/components/ui/button";
 import { Bell } from "lucide-react";
 import UpgradeBlock from "./upgrade-block";
@@ -26,7 +26,7 @@ export default function DesktopMenu({
   return (
     <Sidebar>
       <div className='flex h-14 items-center gap-1 justify-around border-b lg:h-[60px] md:px-2 lg:px-4'>
-        <TeamSwitcher />
+        <DomainSwitcher />
         <Button variant='outline' size='icon' className='ml-auto h-10 w-10'>
           <Bell className='h-4 w-4' />
           <span className='sr-only'>Toggle notifications</span>

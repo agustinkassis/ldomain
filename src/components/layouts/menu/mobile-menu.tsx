@@ -4,7 +4,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { MenuItem } from "@/types/menu";
 import { Menu } from "lucide-react";
 import Link from "next/link";
-import TeamSwitcher from "./team-switcher";
+import DomainSwitcher from "../../../features/domains/components/domain-switcher";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import UpgradeBlock from "./upgrade-block";
@@ -33,7 +33,7 @@ export default function MobileMenu({
       </SheetTrigger>
       <SheetContent side='left' className='flex flex-col'>
         <nav className='grid gap-2 text-lg pr-8 font-medium'>
-          <TeamSwitcher className='w-full text-lg p-2' />
+          <DomainSwitcher className='w-full text-lg p-2' />
           {isLoading ? (
             <LoadingMenu />
           ) : (
