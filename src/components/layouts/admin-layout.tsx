@@ -28,8 +28,8 @@ const menuItems: MenuItem[] = [
   },
   {
     icon: Wallet,
-    title: "Wallets",
-    href: `${ADMIN_PREFIX}/wallets`,
+    title: "Walias",
+    href: `${ADMIN_PREFIX}/walias`,
     disabled: true,
     isAdmin: false,
   },
