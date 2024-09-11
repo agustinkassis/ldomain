@@ -44,8 +44,7 @@ const menuItems: MenuItem[] = [
   {
     icon: Settings,
     title: "Settings",
-    href: `${ADMIN_PREFIX}/settings`,
-    disabled: true,
+    href: `${ADMIN_PREFIX}/domains/settings`,
     isAdmin: false,
   },
   {
