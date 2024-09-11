@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { CircleUser, Laptop, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useCallback } from "react";
+import Link from "next/link";
 
 export default function UserMenu() {
   const router = useRouter();
@@ -58,6 +59,12 @@ export default function UserMenu() {
           My profile
         </DropdownMenuItem>
         <DropdownMenuItem
+          disabled={true}
+          onClick={() => router.push("/admin/inbox")}
+        >
+          Inbox
+        </DropdownMenuItem>
+        <DropdownMenuItem
           className='cursor-pointer'
           onClick={() => router.push("/admin/settings/providers")}
         >
@@ -65,7 +72,7 @@ export default function UserMenu() {
         </DropdownMenuItem>
         <DropdownMenuItem
           className='cursor-pointer'
-          onClick={() => router.push("https://discord.lacrypta.ar")}
+          onClick={() => window.open("https://discord.lacrypta.ar", "_blank")}
         >
           Support
         </DropdownMenuItem>
