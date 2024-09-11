@@ -30,7 +30,8 @@ interface DomainSwitcherProps extends PopoverTriggerProps {}
 
 export default function DomainSwitcher({ className }: DomainSwitcherProps) {
   const [open, setOpen] = React.useState(false);
-  const { domainList, currentDomain, setCurrentDomain } = useDomains();
+  const { domainList, currentDomain, isLoading, setCurrentDomain } =
+    useDomains();
   const [showNewDomainDialog, setShowNewDomainDialog] = React.useState(false);
 
   const groups = React.useMemo(() => {
@@ -52,19 +53,30 @@ export default function DomainSwitcher({ className }: DomainSwitcherProps) {
         open={showNewDomainDialog}
         onOpenChange={setShowNewDomainDialog}
       />
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          {!currentDomain ? (
-            <Skeleton className='w-full h-[40px] p-2 text-xs flex items-center text-gray-500'>
-              Loading Domains
-            </Skeleton>
-          ) : (
+      {isLoading ? (
+        <Skeleton className='w-full h-[40px] p-2 text-xs flex items-center text-gray-500'>
+          Loading Domains
+        </Skeleton>
+      ) : !currentDomain ? (
+        <div className='text-sm w-full'>
+          <Button
+            variant='outline'
+            className={cn("w-full justify-between", className)}
+            onClick={() => setShowNewDomainDialog(true)}
+          >
+            Add Domain
+            <PlusCircle className='ml-auto h-4 w-4' />
+          </Button>
+        </div>
+      ) : (
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
             <Button
               variant='outline'
               role='combobox'
               aria-expanded={open}
               aria-label='Select a domain'
-              className={cn("w-[200px] justify-between", className)}
+              className={cn("w-full justify-between", className)}
             >
               <Avatar className='mr-2 h-5 w-5'>
                 <AvatarImage
@@ -77,66 +89,66 @@ export default function DomainSwitcher({ className }: DomainSwitcherProps) {
               {currentDomain.title}
               <ChevronDown className='ml-auto h-4 w-4 shrink-0 opacity-50' />
             </Button>
-          )}
-        </PopoverTrigger>
-        <PopoverContent className='w-[200px] p-0'>
-          <Command>
-            <CommandList>
-              {groups.map((group) => {
-                if (group.domains.length === 0) {
-                  return null;
-                }
-                return (
-                  <CommandGroup key={group.label} heading={group.label}>
-                    {group.domains.map((domain) => (
-                      <CommandItem
-                        key={domain.name}
-                        onSelect={() => {
-                          setCurrentDomain(domain);
-                          setOpen(false);
-                        }}
-                        className='text-sm'
-                      >
-                        <Avatar className='mr-2 h-5 w-5'>
-                          <AvatarImage
-                            src={domain.logo}
-                            alt={domain.title}
-                            className='grayscale'
+          </PopoverTrigger>
+          <PopoverContent className='md:w-[205px] lg:w-[250px] p-0 mt-0'>
+            <Command>
+              <CommandList>
+                {groups.map((group) => {
+                  if (group.domains.length === 0) {
+                    return null;
+                  }
+                  return (
+                    <CommandGroup key={group.label} heading={group.label}>
+                      {group.domains.map((domain) => (
+                        <CommandItem
+                          key={domain.name}
+                          onSelect={() => {
+                            setCurrentDomain(domain);
+                            setOpen(false);
+                          }}
+                          className='text-sm'
+                        >
+                          <Avatar className='mr-2 h-5 w-5'>
+                            <AvatarImage
+                              src={domain.logo}
+                              alt={domain.title}
+                              className='grayscale'
+                            />
+                            <AvatarFallback>SC</AvatarFallback>
+                          </Avatar>
+                          {domain.title}
+                          <CheckIcon
+                            className={cn(
+                              "ml-auto h-4 w-4",
+                              currentDomain?.name === domain.name
+                                ? "opacity-100"
+                                : "opacity-0"
+                            )}
                           />
-                          <AvatarFallback>SC</AvatarFallback>
-                        </Avatar>
-                        {domain.title}
-                        <CheckIcon
-                          className={cn(
-                            "ml-auto h-4 w-4",
-                            currentDomain?.name === domain.name
-                              ? "opacity-100"
-                              : "opacity-0"
-                          )}
-                        />
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                );
-              })}
-            </CommandList>
-            <CommandSeparator />
-            <CommandList>
-              <CommandGroup>
-                <CommandItem
-                  onSelect={() => {
-                    setOpen(false);
-                    setShowNewDomainDialog(true);
-                  }}
-                >
-                  <PlusCircle className='mr-2 h-5 w-5' />
-                  Add Domain
-                </CommandItem>
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  );
+                })}
+              </CommandList>
+              <CommandSeparator />
+              <CommandList>
+                <CommandGroup>
+                  <CommandItem
+                    onSelect={() => {
+                      setOpen(false);
+                      setShowNewDomainDialog(true);
+                    }}
+                  >
+                    <PlusCircle className='mr-2 h-5 w-5' />
+                    Add Domain
+                  </CommandItem>
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+      )}
     </>
   );
 }

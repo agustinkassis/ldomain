@@ -83,11 +83,18 @@ export function DomainProvider({ children }: DomainProviderProps) {
     if (!userPubkey) {
       return;
     }
-    refreshDomainList().then((domainList) => {
-      setCurrentDomain(domainList[0]);
-    });
+    refreshDomainList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userPubkey]);
+
+  // Auto select
+  useEffect(() => {
+    if (!currentDomain && domainList.length > 0) {
+      console.info("domainList:");
+      console.dir(domainList);
+      setCurrentDomain(domainList[0]);
+    }
+  }, [currentDomain, domainList]);
 
   return (
     <DomainContext.Provider
