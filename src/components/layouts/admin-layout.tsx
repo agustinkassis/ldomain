@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import {
   Search,
   Home,
@@ -17,6 +16,8 @@ import DesktopMenu from "./menu/desktop-menu";
 import { MenuItem } from "@/types/menu";
 import useDomains from "@/features/domains/hooks/use-domains";
 import { Skeleton } from "../ui/skeleton";
+import { useAuth } from "@/hooks/use-auth";
+import { Button } from "../ui/button";
 
 const ADMIN_PREFIX = "/admin";
 const menuItems: MenuItem[] = [
@@ -64,6 +65,11 @@ const menuItems: MenuItem[] = [
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const { currentDomain } = useDomains();
+  const {
+    userPubkey,
+    isLoading: isLoadingAuth,
+    loginWithExtension,
+  } = useAuth();
 
   return (
     <div className='grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]'>
@@ -98,10 +104,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               </div>
             </form>
           </div>
-          {!currentDomain ? (
+          {isLoadingAuth ? (
             <Skeleton className='w-10 h-10 rounded-full' />
-          ) : (
+          ) : userPubkey ? (
             <UserMenu />
+          ) : (
+            <Button onClick={loginWithExtension}>Login</Button>
           )}
         </header>
         <main className='flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6'>
