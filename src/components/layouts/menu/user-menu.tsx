@@ -16,12 +16,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { CircleUser, Laptop, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useCallback } from "react";
 
 export default function UserMenu() {
   const router = useRouter();
-  const { userPubkey } = useAuth();
+  const { userPubkey, logout } = useAuth();
   const { profile } = useProfile({ pubkey: userPubkey! });
   const { theme, setTheme } = useTheme();
+
+  const handleLogout = useCallback(() => {
+    logout();
+    router.push("/admin");
+  }, [logout]);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -95,10 +102,7 @@ export default function UserMenu() {
           </div>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          className='cursor-pointer'
-          onClick={() => router.push("/")}
-        >
+        <DropdownMenuItem className='cursor-pointer' onClick={handleLogout}>
           Logout
         </DropdownMenuItem>
       </DropdownMenuContent>

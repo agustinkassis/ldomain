@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import DomainResolverDetails from "./domain-resolver-details";
+import Link from "next/link";
 
 export interface AddDomainDialogProps {
   open: boolean;
@@ -53,7 +54,7 @@ export default function AddDomainDialog({
           <DialogDescription>
             {showDetails
               ? "Review domain details"
-              : "Enter the email address (Walias) associated with the domain you want to add."}
+              : "Enter your Walias (NIP-05) associated with the domain you want to add."}
           </DialogDescription>
         </DialogHeader>
         {!showDetails ? (
@@ -74,6 +75,13 @@ export default function AddDomainDialog({
                   disabled={isLoading}
                 />
               </div>
+            </div>
+            <div className='text-sm text-muted-foreground'>
+              Click{" "}
+              <Link href={"/setup"} className='font-bold hover:text-slate-400'>
+                HERE
+              </Link>{" "}
+              to turn your domain into a Lightning Domain in 5 minutes.
             </div>
             <DialogFooter>
               <Button type='submit'>Add Domain</Button>

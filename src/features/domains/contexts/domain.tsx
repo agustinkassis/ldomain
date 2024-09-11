@@ -81,6 +81,8 @@ export function DomainProvider({ children }: DomainProviderProps) {
 
   useEffect(() => {
     if (!userPubkey) {
+      setCurrentDomain(undefined);
+      setDomainList([]);
       return;
     }
     refreshDomainList();
