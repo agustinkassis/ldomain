@@ -2,6 +2,7 @@ export interface Domain {
   title: string;
   name: string;
   logo: string;
+  description: string;
   apiEndpoint?: string;
   adminPubkey?: string;
   hasProfileJson?: boolean;

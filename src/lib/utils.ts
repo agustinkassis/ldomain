@@ -52,13 +52,13 @@ export async function getDomainProfile(
   $domain: string
 ): Promise<Domain | null> {
   try {
-    const response = await fetch(`https://${$domain}/.well-known/profile.json`);
+    const response = await fetch(`https://${$domain}/.well-known/domain.json`);
 
     if (!response.ok) {
       console.error(`HTTP error! Status: ${response.status}`);
       return null;
     }
-    return await response.json();
+    return { ...(await response.json()), name: $domain };
   } catch (error) {
     console.error("Fetch error:", error);
     return null;

@@ -92,7 +92,7 @@ export default function DomainResolverDetails({
             {isLoadingProfile ? (
               <>
                 <Loader2 className='h-4 w-4 animate-spin' />
-                <span>Getting domain profile.json</span>
+                <span>Getting domain domain.json</span>
               </>
             ) : profile?.hasProfileJson ? (
               <>
